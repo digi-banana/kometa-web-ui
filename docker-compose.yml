@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  kometa:
+    image: kometateam/kometa
+    container_name: kometa
+    volumes:
+      - ./config:/config
+    environment:
+      - TZ=America/New_York
+    restart: unless-stopped
+
+  kometa-ui:
+    build: .
+    container_name: kometa-ui
+    ports:
+      - "8461:8461"
+    volumes:
+      - ./config:/app/kometa_config
+      - ./config_backups:/app/config_backups
+      - ./logs:/app/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
