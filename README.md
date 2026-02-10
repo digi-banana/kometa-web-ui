@@ -17,3 +17,4 @@ A custom web interface for [Kometa](https://github.com/Kometa-Team/Kometa) featu
 2. Launch the stack:
    ```bash
    docker-compose up -d --build
+3. Access the dashboard at http://localhost:8461
