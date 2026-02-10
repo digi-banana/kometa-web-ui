@@ -1,0 +1,6 @@
+flask==3.0.0
+flask-socketio==5.3.6
+flask-apscheduler==1.13.1
+eventlet==0.33.3
+pyyaml==6.0.1
+docker==6.1.3
