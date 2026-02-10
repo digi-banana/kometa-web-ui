@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html class="dark">
+<head>
+    <title>Kometa Commander</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 p-6">
+    <div class="max-w-7xl mx-auto flex gap-6">
+        <div class="flex-grow space-y-4">
+            <div class="flex justify-between items-center bg-gray-800 p-4 rounded-lg">
+                <div class="flex gap-4">
+                    <select id="file-list" onchange="loadFile()" class="bg-gray-700 p-2 rounded"></select>
+                    <button onclick="saveFile()" class="bg-blue-600 px-4 py-2 rounded">Save</button>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <label><input type="checkbox" id="dry-run"> Dry Run</label>
+                    <button onclick="startSync()" class="bg-green-600 px-4 py-2 rounded">Run Sync</button>
+                </div>
+            </div>
+            <div id="editor" class="h-[600px] border border-gray-700 rounded-lg"></div>
+            <div id="terminal" class="h-48 bg-black p-4 font-mono text-xs overflow-y-auto text-green-500 rounded-lg border border-gray-700"></div>
+        </div>
+
+        <div class="w-80 space-y-4 shrink-0">
+            <div class="sticky top-6 space-y-4">
+                <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                    <h3 class="text-xs font-bold uppercase mb-2 text-gray-400 text-center">Poster Preview</h3>
+                    <div id="drop-zone" class="cursor-pointer group relative">
+                        <img id="preview" src="https://via.placeholder.com/300x450?text=Upload+Poster" class="rounded">
+                        <input type="file" id="file-input" class="hidden">
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                    <h3 class="text-xs font-bold uppercase text-yellow-500 mb-2">Parameter Guide</h3>
+                    <input type="text" id="search" placeholder="Search..." class="w-full bg-gray-900 p-2 text-xs rounded mb-2 border border-gray-700">
+                    <div id="helper-content" class="text-xs space-y-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const KOMETA_SCHEMA = {
+            "url": { "desc": "Plex Server URL", "example": "url: http://localhost:32400" },
+            "token": { "desc": "Plex Auth Token", "example": "token: ABC123XYZ" },
+            "asset_directory": { "desc": "Folder for posters", "example": "asset_directory: config/assets" }
+        };
+
+        let editor;
+        const socket = io();
+
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                language: 'yaml', theme: 'vs-dark', automaticLayout: true
+            });
+            editor.onDidChangeCursorPosition(e => {
+                const word = editor.getModel().getWordAtPosition(e.position);
+                if(word && KOMETA_SCHEMA[word.word]) updateHelper(word.word);
+            });
+        });
+
+        // Add Logic for loadFile, saveFile, startSync, and Search here...
+        // (Functionality matches the snippets provided in previous steps)
+    </script>
+</body>
+</html>
