@@ -13,8 +13,16 @@ A custom web interface for [Kometa](https://github.com/Kometa-Team/Kometa) featu
 - **Dockerized:** Runs alongside the official Kometa container via Docker Compose.
 
 ## 🛠️ Quick Start
-1. Place your `config.yml` in the `/config` directory.
-2. Launch the stack:
+1. Clone the respository:
+   ```bash
+   git clone https://github.com/digi-banana/kometa-web-ui
+2. Edit `docker-compose.yml`
+   - `./config:/config` --> Replace "`./config`" with the location of where your existing config.yml file is
+     - Note that this shows up in "volumes" under the kometa service and twice in the kometa-ui service
+   - `TZ=America/New_York` --> Replace with your timezone so that the cron jobs will be run at the correct times
+     - A list of timezones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+4. Place your `config.yml` in the `/config` directory.
+5. Launch the stack:
    ```bash
    docker-compose up -d --build
-3. Access the dashboard at http://localhost:8461
+6. Access the dashboard at http://localhost:8461
